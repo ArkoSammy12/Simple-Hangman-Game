@@ -2,10 +2,10 @@ import java.util.*;
 
 public class Main {
 
-    public static boolean doContinue = true;
-    public static boolean doRunning = true;
-    public static int attemptCounter = 0;
-    public static ArrayList<Hangman> hangmen = new ArrayList<>();
+    static boolean doContinue = true;
+    static boolean doRunning = true;
+    static int attemptCounter = 0;
+    static ArrayList<Hangman> hangmen = new ArrayList<>();
 
     public static void main(String[] args) {
 
@@ -27,21 +27,19 @@ public class Main {
 
     }
 
-    public static void initHangman() {
-
-        Scanner scanner = new Scanner(System.in);
+    static void initHangman() {
 
         System.out.println(
                 "HANGMAN\n\nWelcome to Hangman! To continue, please enter a word. Make sure to not let others see the word: \n");
-        String word = scanner.nextLine();
+        String word = Console.s.nextLine();
 
         hangmen.add(Hangman.getNewHangman(word));
 
-        Hangman.clearAndReturn();
+        Console.clearAndReturn();
 
     }
 
-    public static void loopHangman() {
+    static void loopHangman() {
 
         char currentChar = hangmen.get(attemptCounter).drawGame();
 
@@ -62,85 +60,79 @@ public class Main {
 
         if (!hangmen.get(attemptCounter).shouldContinue()) {
 
-            Hangman.clearAndReturn();
+            Console.clearAndReturn();
 
             doRunning = false;
 
             boolean incorrectInput = true;
 
-            Scanner s = new Scanner(System.in);
+            if (hangmen.get(attemptCounter).hasWon()) {
 
-            while (incorrectInput) {
+                for (int i = 0; i < hangmen.get(attemptCounter).getFilledLetters().length; i++) {
 
-                if (hangmen.get(attemptCounter).hasWon()) {
-
-                    for (int i = 0; i < hangmen.get(attemptCounter).getFilledLetters().length; i++) {
-
-                        System.out.print(hangmen.get(attemptCounter).getFilledLetters()[i]);
-
-                    }
-
-                    System.out.println("\n\nCongratulations, you have won!");
-
-                } else {
-
-                    for (int i = 0; i < hangmen.get(attemptCounter).getFilledLetters().length; i++) {
-
-                        System.out.print(hangmen.get(attemptCounter).getFilledLetters()[i]);
-
-                    }
-
-                    System.out.println("\n\nYou have lost. The correct word was: "
-                            + hangmen.get(attemptCounter).getWord());
+                    System.out.print(hangmen.get(attemptCounter).getFilledLetters()[i]);
 
                 }
 
-                System.out.println("Do you wish to continue? y/n");
+                System.out.println("\n\nCongratulations, you have won!");
 
-                while (incorrectInput) {
+            } else {
 
-                    char c = s.nextLine().charAt(0);
+                for (int i = 0; i < hangmen.get(attemptCounter).getFilledLetters().length; i++) {
 
-                    switch (c) {
+                    System.out.print(hangmen.get(attemptCounter).getFilledLetters()[i]);
 
-                        case 'y':
-                            doRunning = false;
-                            incorrectInput = false;
-                            attemptCounter++;
-                            break;
-                        case 'n':
-                            doRunning = false;
-                            doContinue = false;
-                            incorrectInput = false;
-                            break;
-                        default:
-                            System.out.println("\nInvalid input. Please try again");
-                            break;
-                    }
+                }
 
+                System.out.println("\n\nYou have lost. The correct word was: "
+                        + hangmen.get(attemptCounter).getWord());
+
+            }
+
+            System.out.println("Do you wish to continue? y/n");
+
+            while (incorrectInput) {
+
+                char c = Console.s.nextLine().charAt(0);
+
+                switch (c) {
+
+                    case 'y':
+                        doRunning = false;
+                        incorrectInput = false;
+                        attemptCounter++;
+                        break;
+                    case 'n':
+                        doRunning = false;
+                        doContinue = false;
+                        incorrectInput = false;
+                        break;
+                    default:
+                        System.out.println("\nInvalid input. Please try again");
+                        break;
                 }
 
             }
 
         }
 
-        Hangman.clearAndReturn();
+        Console.clearAndReturn();
 
     }
 
-    public static void displayScore(ArrayList<Hangman> hangmen){
+    public static void displayScore(ArrayList<Hangman> hangmen) {
 
         int attemptNumber = 0;
 
         System.out.println("Result Screen\n");
 
-        for(Hangman hangman : hangmen){
+        for (Hangman hangman : hangmen) {
 
             System.out.println("Attempt counter: " + (attemptNumber + 1));
             System.out.println("Word to guess: " + hangman.getWord());
             System.out.print("Letters guessed: ");
 
-            for(int i = 0; i < hangman.getFilledLetters().length; i++){
+            for (int i = 0; i < hangman.getFilledLetters().length; i++) {
 
                 System.out.print(hangman.getFilledLetters()[i]);
 

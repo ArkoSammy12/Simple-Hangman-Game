@@ -20,19 +20,19 @@ public class Hangman {
 
     }
 
-    public void setWord(String word) {
+    void setWord(String word) {
 
         this.word = word;
 
     }
 
-    public void setLives() {
+    void setLives() {
 
         this.livesLeft = 5;
 
     }
 
-    public void setFilledLetters(String word) {
+    void setFilledLetters(String word) {
 
         this.filledLetters = new char[word.length()];
 
@@ -88,8 +88,6 @@ public class Hangman {
 
     public char drawGame() {
 
-        Scanner s = new Scanner(System.in);
-
         System.out.println(this.livesLeft == 5 || this.getPreviousAttempt()
                 ? "You have " + this.getLivesLeft() + " lives left\n"
                 : "Your guess was wrong. You have " + this.getLivesLeft() + " lives left\n");
@@ -108,7 +106,7 @@ public class Hangman {
 
         while (!sameInput) {
 
-            letter = s.nextLine().charAt(0);
+            letter = Console.s.nextLine().charAt(0);
 
             if (this.wasAlreadyGuessed(letter)) {
 
@@ -208,21 +206,6 @@ public class Hangman {
 
         return false;
 
-    }
-
-    public static void clearAndReturn() {
-        try {
-            if (System.getProperty("os.name").contains("Windows")) {
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            } else {
-                Runtime.getRuntime().exec("clear");
-            }
-        } catch (Exception e) {
-            // Handle exceptions as needed
-            e.printStackTrace();
-
-            System.out.print("\u001B[H");
-        }
     }
 
 }
